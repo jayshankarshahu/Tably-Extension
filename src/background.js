@@ -1,8 +1,12 @@
-function getAllTabs(callback) {
-  chrome.tabs.query({}, function(tabs) {
-    callback(tabs);
-  });
-}
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.action === "getTabs") {
+        chrome.tabs.query({}, (tabs) => {
+            sendResponse(tabs);
+        });
+        return true;
+    }
+});
+
 
 
 chrome.commands.onCommand.addListener((command) => {
