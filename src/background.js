@@ -6,6 +6,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         });
         return true;
     }
+
+    if(msg.action === "activateTab") {
+      chrome.tabs.update(msg.id, { active: true });
+    }
 });
 
 

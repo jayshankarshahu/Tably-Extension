@@ -41,6 +41,30 @@
   box.style.fontFamily = "system-ui, sans-serif";
   overlay.appendChild(box);
 
+  const ring = document.createElement("div");
+  ring.style.position = "absolute";
+  ring.style.left = "0";
+  ring.style.right = "0";
+  ring.style.height = "32px";
+  ring.style.background = "rgba(0,120,215,0.15)";
+  ring.style.border = "2px solid #0078d7";
+  ring.style.borderRadius = "6px";
+  ring.style.pointerEvents = "none";
+  ring.style.transition = "top 0.15s";
+  ring.style.display = "none";
+  box.style.position = "relative"; 
+  box.appendChild(ring);
+
+  function moveRing(index) {
+    if (index < 0 || index >= rows.length) return;
+    currentIndex = index;
+    ring.style.display = "block";
+    ring.style.top = rows[index].row.offsetTop + "px";
+  }
+
+  let rows = [];
+  let currentIndex = -1;
+
   getTabs().then(tabs => {
     if (!tabs || !tabs.length) {
       box.innerText = "No tabs found.";
@@ -51,7 +75,7 @@
       return b.lastAccessed - a.lastAccessed;
     })
 
-    tabs.forEach((tab) => {
+    tabs.forEach((tab,i) => {
       const row = document.createElement("div");
       row.innerText = tab.title || "(no title)";
       row.style.padding = "8px 10px";
@@ -69,12 +93,36 @@
         row.style.backgroundColor = "transparent";
       });
 
+      row.addEventListener("click", () => {
+        moveRing(i);
+        chrome.runtime.sendMessage({ action: "activateTab", id: tab.id });
+        cleanup();
+      });
+
       box.appendChild(row);
+
+      rows.push({ row, tab });
+
     });
     
   });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      moveRing((currentIndex + 1) % rows.length); // % to make it wrapped
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      moveRing((currentIndex - 1 + rows.length) % rows.length); 
+    }
+    if (e.key === "Enter" && currentIndex >= 0) {
+      chrome.runtime.sendMessage({ action: "activateTab", id: rows[currentIndex].tab.id });
+      cleanup();
+    }
+  },true); // to prevent controlling the active web page
   
-  document.addEventListener('keyup', handleKeyUp, true);
+  document.addEventListener('keyup', handleKeyUp);
 
   let isAltPressed = true;
 
