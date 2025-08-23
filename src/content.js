@@ -156,6 +156,10 @@
     }
   }
 
+  window.addEventListener('blur',()=> {
+    cleanup();
+  });
+
 })();
 
 
