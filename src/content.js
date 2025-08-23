@@ -60,6 +60,12 @@
     currentIndex = index;
     ring.style.display = "block";
     ring.style.top = rows[index].row.offsetTop + "px";
+
+    rows[index].row.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"  // to prevent full scrolling when the row is out of sight
+    });
+
   }
 
   let rows = [];
