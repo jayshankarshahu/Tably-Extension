@@ -13,10 +13,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 chrome.commands.onCommand.addListener((command) => {
   if (command === "open_content_script") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.scripting.executeScript({
-        target: { tabId: tabs[0].id },
-        files: ["src/content.js"]
-      }).catch(() => {
+      const tabId = tabs[0].id;
+
+      chrome.tabs.sendMessage(tabId, "is_open_content", (response) => {
+        if (chrome.runtime.lastError || !response) {
+          chrome.scripting.executeScript({
+            target: { tabId },
+            files: ["src/content.js"]
+          });
+        }
       });
     });
   }

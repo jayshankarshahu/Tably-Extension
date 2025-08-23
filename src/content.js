@@ -8,6 +8,14 @@
     })
   }
 
+  function handleMessage(msg, sender, sendResponse) {
+    if (msg === "is_open_content") {
+      sendResponse({ is_open: true });
+    }
+  }
+
+  chrome.runtime.onMessage.addListener(handleMessage);
+
   const overlay = document.createElement("div");
   overlay.style.position = "fixed";
   overlay.style.top = "0";
@@ -15,23 +23,22 @@
   overlay.style.width = "100%";
   overlay.style.height = "100%";
   overlay.style.zIndex = "999999";
-  overlay.style.opacity = "1";
-
+  overlay.style.background = "rgba(0, 0, 0, 0.5)";
+  overlay.style.display = "flex";
+  overlay.style.justifyContent = "center";
+  overlay.style.alignItems = "center";
   document.body.appendChild(overlay);
 
   const box = document.createElement("div");
-  box.style.position = "absolute";
-  box.style.top = "50%";
-  box.style.left = "50%";
-  box.style.transform = "translate(-50%, -50%)";
-  box.style.backgroundColor = "#000";
-  box.style.padding = "20px";
+  box.style.backgroundColor = "#fff";
+  box.style.padding = "16px 20px";
   box.style.borderRadius = "12px";
-  box.style.boxShadow = "0 4px 20px rgba(0,0,0,0.3)";
-  box.style.maxHeight = "70%";
+  box.style.boxShadow = "0 8px 30px rgba(0,0,0,0.3)";
+  box.style.minWidth = "320px";
+  box.style.maxWidth = "600px";
+  box.style.maxHeight = "400px";
   box.style.overflowY = "auto";
-  box.style.minWidth = "300px";
-  box.style.textAlign = "left";
+  box.style.fontFamily = "system-ui, sans-serif";
   overlay.appendChild(box);
 
   getTabs().then(tabs => {
@@ -46,11 +53,22 @@
 
     tabs.forEach((tab) => {
       const row = document.createElement("div");
-      row.innerText = `${tab.title}`;
-      row.style.padding = "6px 0";
-      row.style.borderBottom = "1px solid #ddd";
-      row.style.fontFamily = "sans-serif";
+      row.innerText = tab.title || "(no title)";
+      row.style.padding = "8px 10px";
+      row.style.borderBottom = "1px solid #eee";
       row.style.fontSize = "14px";
+      row.style.cursor = "pointer";
+      row.style.whiteSpace = "nowrap";
+      row.style.overflow = "hidden";
+      row.style.textOverflow = "ellipsis";
+
+      row.addEventListener("mouseenter", () => {
+        row.style.backgroundColor = "#f5f5f5";
+      });
+      row.addEventListener("mouseleave", () => {
+        row.style.backgroundColor = "transparent";
+      });
+
       box.appendChild(row);
     });
     
@@ -71,6 +89,7 @@
     }
 
     document.removeEventListener('keyup', handleKeyUp);
+    chrome.runtime.onMessage.removeListener(handleMessage);
   }
 
   function handleKeyUp(e) {
