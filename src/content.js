@@ -129,6 +129,9 @@
   },true); // to prevent controlling the active web page
   
   document.addEventListener('keyup', handleKeyUp);
+  overlay.addEventListener('click', ()=> {
+    cleanup();
+  },true);
 
   let isAltPressed = true;
 
