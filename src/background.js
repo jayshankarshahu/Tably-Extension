@@ -8,7 +8,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
 
     if(msg.action === "activateTab") {
-      chrome.tabs.update(msg.id, { active: true });
+      chrome.tabs.update(msg.id, { active: true },(tab)=> {
+        chrome.windows.update(tab.windowId, { focused: true });
+      });
     }
 });
 
