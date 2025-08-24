@@ -153,6 +153,7 @@
     });
 
 
+
     chrome.runtime.onMessage.addListener(handleMessage);
     document.addEventListener("keydown",handleMove,true); // to prevent controlling the active web page
     document.addEventListener('keyup', handleKeyUp);
@@ -167,6 +168,10 @@
   function handleMessage(msg, sender, sendResponse) {
     if (msg === "is_open_content") {
       sendResponse({ is_open: true });
+    }
+
+    if(msg === "moveQ") {
+      moveRing((currentIndex + 1) % rows.length);
     }
   }
 

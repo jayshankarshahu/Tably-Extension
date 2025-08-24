@@ -27,6 +27,8 @@ chrome.commands.onCommand.addListener((command) => {
             target: { tabId },
             files: ["src/content.js"]
           });
+        } else {
+          chrome.tabs.sendMessage(tabId,"moveQ");
         }
       });
     });
