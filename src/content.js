@@ -55,12 +55,30 @@
   box.style.position = "relative"; 
   box.appendChild(ring);
 
+  function HoverRow(rowElement) {
+    rowElement.style.backgroundColor = "rgba(59, 169, 255, 0.15)";
+    rowElement.style.color = "#ffffff";
+    rowElement.style.transform = "translateX(4px)";
+  }
+
+  function LeaveRow(rowElement) {
+    rowElement.style.backgroundColor = "transparent";
+    rowElement.style.color = "#e0e0e0";
+    rowElement.style.transform = "translateX(0)";
+  }
+
   function moveRing(index) {
     if (index < 0 || index >= rows.length) return;
     currentIndex = index;
     ring.style.display = "block";
     ring.style.top = rows[index].row.offsetTop + "px";
 
+    for(let i = 0 ; i < rows.length ; ++i) {
+      LeaveRow(rows[i].row);
+    }
+
+    HoverRow(rows[index].row);
+  
     rows[index].row.scrollIntoView({
       behavior: "smooth",
       block: "nearest"  // to prevent full scrolling when the row is out of sight
