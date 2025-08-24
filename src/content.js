@@ -1,5 +1,13 @@
 (function() {
 
+
+  // states
+  let rows = [];
+  let currentIndex = -1;
+  let isAltPressed = true;
+
+  // General Functions
+
   const getTabs = () => {
     return new Promise((resolve) => {
       chrome.runtime.sendMessage({action: "getTabs"}, (res) => {
@@ -8,14 +16,56 @@
     })
   }
 
-  function handleMessage(msg, sender, sendResponse) {
-    if (msg === "is_open_content") {
-      sendResponse({ is_open: true });
+  function HoverRow(rowElement) {
+    rowElement.style.backgroundColor = "rgba(59, 169, 255, 0.15)";
+    rowElement.style.color = "#ffffff";
+    rowElement.style.transform = "translateX(4px)";
+  }
+
+  function LeaveRow(rowElement) {
+    rowElement.style.backgroundColor = "transparent";
+    rowElement.style.color = "#e0e0e0";
+    rowElement.style.transform = "translateX(0)";
+  }
+
+  function moveRing(index) {
+    if (index < 0 || index >= rows.length) return;
+    currentIndex = index;
+    ring.style.display = "block";
+    ring.style.top = rows[index].row.offsetTop + "px";
+
+    for(let i = 0 ; i < rows.length ; ++i) {
+      LeaveRow(rows[i].row);
+    }
+
+    HoverRow(rows[index].row);
+  
+    rows[index].row.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"  // to prevent full scrolling when the row is out of sight
+    });
+
+  }
+
+  function cleanup() {
+    
+    overlay.removeEventListener('click' , handleClickOut,true);
+    window.removeEventListener('blur' , handleClean);
+    document.removeEventListener('keydown', handleMove,true);
+    document.removeEventListener('keyup', handleKeyUp);
+    chrome.runtime.onMessage.removeListener(handleMessage);
+
+    if (overlay && overlay.parentNode) {
+      overlay.style.opacity = "0";
+      setTimeout(() => {
+          if (overlay.parentNode) {
+            overlay.remove();
+          }
+        }, 200);
     }
   }
 
-  chrome.runtime.onMessage.addListener(handleMessage);
-
+  // styling
   const overlay = document.createElement("div");
   overlay.style.position = "fixed";
   overlay.style.top = "0";
@@ -55,40 +105,7 @@
   box.style.position = "relative"; 
   box.appendChild(ring);
 
-  function HoverRow(rowElement) {
-    rowElement.style.backgroundColor = "rgba(59, 169, 255, 0.15)";
-    rowElement.style.color = "#ffffff";
-    rowElement.style.transform = "translateX(4px)";
-  }
-
-  function LeaveRow(rowElement) {
-    rowElement.style.backgroundColor = "transparent";
-    rowElement.style.color = "#e0e0e0";
-    rowElement.style.transform = "translateX(0)";
-  }
-
-  function moveRing(index) {
-    if (index < 0 || index >= rows.length) return;
-    currentIndex = index;
-    ring.style.display = "block";
-    ring.style.top = rows[index].row.offsetTop + "px";
-
-    for(let i = 0 ; i < rows.length ; ++i) {
-      LeaveRow(rows[i].row);
-    }
-
-    HoverRow(rows[index].row);
-  
-    rows[index].row.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"  // to prevent full scrolling when the row is out of sight
-    });
-
-  }
-
-  let rows = [];
-  let currentIndex = -1;
-
+  // script
   getTabs().then(tabs => {
     if (!tabs || !tabs.length) {
       box.innerText = "No tabs found.";
@@ -134,10 +151,26 @@
       rows.push({ row, tab });
 
     });
+
+
+    chrome.runtime.onMessage.addListener(handleMessage);
+    document.addEventListener("keydown",handleMove,true); // to prevent controlling the active web page
+    document.addEventListener('keyup', handleKeyUp);
+    overlay.addEventListener('click', handleClickOut,true);
+    window.addEventListener('blur',handleClean);
     
   });
 
-  document.addEventListener("keydown", (e) => {
+
+  // handleEvents
+
+  function handleMessage(msg, sender, sendResponse) {
+    if (msg === "is_open_content") {
+      sendResponse({ is_open: true });
+    }
+  }
+
+  const handleMove =  (e) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
       moveRing((currentIndex + 1) % rows.length); // % to make it wrapped
@@ -150,27 +183,10 @@
       chrome.runtime.sendMessage({ action: "activateTab", id: rows[currentIndex].tab.id });
       cleanup();
     }
-  },true); // to prevent controlling the active web page
-  
-  document.addEventListener('keyup', handleKeyUp);
-  overlay.addEventListener('click', ()=> {
+  };
+
+  function handleClickOut(e) {
     cleanup();
-  },true);
-
-  let isAltPressed = true;
-
-  function cleanup() {
-    if (overlay && overlay.parentNode) {
-      overlay.style.opacity = "0";
-      setTimeout(() => {
-        if (overlay.parentNode) {
-          overlay.remove();
-        }
-      }, 200);
-    }
-
-    document.removeEventListener('keyup', handleKeyUp);
-    chrome.runtime.onMessage.removeListener(handleMessage);
   }
 
   function handleKeyUp(e) {
@@ -180,9 +196,9 @@
     }
   }
 
-  window.addEventListener('blur',()=> {
+  function handleClean() {
     cleanup();
-  });
+  }
 
 })();
 
