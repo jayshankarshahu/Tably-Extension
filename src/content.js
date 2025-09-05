@@ -169,7 +169,7 @@
 
     chrome.runtime.onMessage.addListener(handleMessage);
     document.addEventListener("keydown",handleMove,true); // to prevent controlling the active web page
-    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('keyup', handleKeyUp,);
     overlay.addEventListener('click', handleClickOut,true);
     window.addEventListener('blur',handleClean);
     
@@ -191,13 +191,17 @@
   const handleMove =  (e) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
+      e.stopPropagation();
       moveRing((currentIndex + 1) % rows.length); // % to make it wrapped
     }
     if (e.key === "ArrowUp") {
       e.preventDefault();
+      e.stopPropagation();
       moveRing((currentIndex - 1 + rows.length) % rows.length); 
     }
     if (e.key === "Enter" && currentIndex >= 0) {
+      e.preventDefault();
+      e.stopPropagation();
       chrome.runtime.sendMessage({ action: "activateTab", id: rows[currentIndex].tab.id });
       cleanup();
     }
