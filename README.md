@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">Tably is a Chrome extension that simulates Alt+Tab behavior for your browser tabs using ALT+Q
+<h4 align="center">Tably is a Chrome extension that simulates Alt+Tab behavior for your browser tabs using Alt+Q
 </h4>
 
 <p align="center">
@@ -30,7 +30,7 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](public/record.gif)  
+![screenshot](public/recordCv1.gif)  
 
 ---
 
@@ -76,10 +76,9 @@ We welcome contributions to Tably! Here's how you can help:
 To set up the development environment:
 
 1. Clone the repository
-2. Install dependencies (if any)
-3. Load the extension in Chrome as described in the "How To Use Locally" section
-4. Make changes to the code
-5. Test your changes by reloading the extension in Chrome
+2. Load the extension in Chrome as described in the "How To Use Locally" section
+3. Make changes to the code
+4. Test your changes by reloading the extension in Chrome
 
 ## Credits 👏
 
