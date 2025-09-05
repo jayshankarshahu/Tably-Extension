@@ -4,7 +4,19 @@
     "version": "1.0.0",
     "description": "Simulate Alt+Tab behaviour for your chrome tabs",
     "action": {
-      "default_popup": "src/popup/popup.html"
+      "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "public/tably.png",
+      "32": "public/tably.png",
+      "48": "public/tably.png",
+      "128": "public/tably.png"
+    },
+      "icons": {
+    "16": "public/tably.png",
+    "32": "public/tably.png",
+    "48": "public/tably.png",
+    "128": "public/tably.png"
+    }
     },
     "permissions": ["tabs","scripting","activeTab"],
     "background" : {

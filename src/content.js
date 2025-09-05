@@ -73,6 +73,7 @@
   // styling
   // TODO: isolate the shit from the host page 
   const overlay = document.createElement("div");
+  overlay.style.all = 'unset';
   overlay.style.position = "fixed";
   overlay.style.top = "0";
   overlay.style.left = "0";
@@ -87,6 +88,7 @@
 
   
   const box = document.createElement("div");
+  box.style.all = 'unset';
   box.style.backgroundColor = "#1e1e2f"; 
   box.style.color = "#f5f5f5";          
   box.style.padding = "20px";
@@ -102,6 +104,7 @@
   overlay.appendChild(box);
   
   const ring = document.createElement("div");
+  ring.style.all = 'unset';
   ring.style.position = "absolute";
   ring.style.height = "20px";
   ring.style.minHeight = "20px";
@@ -130,6 +133,7 @@
 
     tabs.forEach((tab,i) => {
       const row = document.createElement("div");
+      row.style.all = 'unset';
       row.innerText = tab.title || "(no title)";
       row.style.height = "45px";                      
       row.style.minHeight = "45px";        
