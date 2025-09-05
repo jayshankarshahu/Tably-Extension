@@ -5,6 +5,7 @@
   let rows = [];
   let currentIndex = -1;
   let isAltPressed = true;
+  let lastIndex = -1;
 
   // General Functions
 
@@ -45,10 +46,12 @@
       block: "nearest"  // to prevent full scrolling when the row is out of sight
     });
 
+    lastIndex = index;
+
   }
 
   function cleanup() {
-    
+    chrome.runtime.sendMessage({ action: "activateTab", id: rows[currentIndex].tab.id });
     overlay.removeEventListener('click' , handleClickOut,true);
     window.removeEventListener('blur' , handleClean);
     document.removeEventListener('keydown', handleMove,true);
@@ -65,7 +68,10 @@
     }
   }
 
+
+  
   // styling
+  // TODO: isolate the shit from the host page 
   const overlay = document.createElement("div");
   overlay.style.position = "fixed";
   overlay.style.top = "0";
@@ -78,8 +84,8 @@
   overlay.style.justifyContent = "center";
   overlay.style.alignItems = "center";
   overlay.style.backdropFilter = "blur(1px)";
-  document.body.appendChild(overlay);
 
+  
   const box = document.createElement("div");
   box.style.backgroundColor = "#1e1e2f"; 
   box.style.color = "#f5f5f5";          
@@ -88,14 +94,18 @@
   box.style.boxShadow = "0 12px 40px rgba(0,0,0,0.5)";
   box.style.width = "400px";
   box.style.maxHeight = "480px";
+  box.style.minHeight = "480px";
   box.style.overflowY = "auto";
   box.style.fontFamily = "Segoe UI, system-ui, sans-serif";
   box.style.border = "1px solid rgba(255,255,255,0.08)";
+  box.style.margin = "1px 1px"
   overlay.appendChild(box);
-
+  
   const ring = document.createElement("div");
   ring.style.position = "absolute";
   ring.style.height = "20px";
+  ring.style.minHeight = "20px";
+  ring.style.maxHeight = "20px";
   ring.style.margin = "12.5px 0px";
   ring.style.background = "rgba(0, 120, 215, 0.2)";
   ring.style.border = "2px solid #3ba9ff";
@@ -104,7 +114,9 @@
   ring.style.display = "none";
   box.style.position = "relative"; 
   box.appendChild(ring);
-
+  
+  document.body.appendChild(overlay);
+  
   // script
   getTabs().then(tabs => {
     if (!tabs || !tabs.length) {
@@ -119,7 +131,7 @@
     tabs.forEach((tab,i) => {
       const row = document.createElement("div");
       row.innerText = tab.title || "(no title)";
-      row.style.height = "45px";           
+      row.style.height = "45px";                      
       row.style.minHeight = "45px";        
       row.style.maxHeight = "45px";        
       row.style.lineHeight = "45px";       
@@ -163,7 +175,7 @@
 
     if(rows.length >= 2) {
       moveRing(1);
-    } else if(rows.length == 1) {
+    } else if(rows.length >= 1) {
       moveRing(0);
     }
 
