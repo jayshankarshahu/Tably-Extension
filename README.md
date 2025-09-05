@@ -42,7 +42,6 @@ You can try Tably by installing it from the [Chrome Web Store](https://chrome.go
 
 * **Familiar Alt+Tab Interface** 🔄 - Experience the same window switching behavior you know from your operating system, but for browser tabs
 * **Quick Navigation** ⚡ - Use ALT+Q to quickly switch between your open tabs
-* **Visual Preview** 👀 - See thumbnails of your tabs for easy identification
 * **Keyboard-Friendly** ⌨️ - Navigate through tabs using keyboard arrows while holding ALT+Q
 * **Efficient Workflow** 🎯 - Reduce mouse dependency and speed up your browsing workflow
 
