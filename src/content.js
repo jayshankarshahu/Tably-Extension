@@ -1,6 +1,5 @@
 (function() {
 
-
   // states
   let rows = [];
   let currentIndex = -1;
@@ -84,6 +83,7 @@
   overlay.style.justifyContent = "center";
   overlay.style.alignItems = "center";
   overlay.style.backdropFilter = "blur(1px)";
+  overlay.style.direction = "ltr";
 
   
   const box = document.createElement("div");
@@ -99,6 +99,7 @@
   box.style.fontFamily = "Segoe UI, system-ui, sans-serif";
   box.style.border = "1px solid rgba(255,255,255,0.08)";
   box.style.margin = "1px 1px"
+  box.style.direction = "ltr";
   overlay.appendChild(box);
   
   const ring = document.createElement("div");
@@ -112,10 +113,11 @@
   ring.style.borderRadius = "8px";
   ring.style.transition = "top 0.15s";
   ring.style.display = "none";
+  ring.style.direction = "ltr";
   box.style.position = "relative"; 
   box.appendChild(ring);
   
-  document.body.appendChild(overlay);
+  document.body.prepend(overlay);
   
   // script
   getTabs().then(tabs => {
@@ -130,25 +132,42 @@
 
     tabs.forEach((tab,i) => {
       const row = document.createElement("div");
-      row.style.all = 'unset';
-      row.innerText = tab.title || "(no title)";
-      row.style.height = "45px";                      
-      row.style.minHeight = "45px";        
-      row.style.maxHeight = "45px";        
-      row.style.lineHeight = "45px";       
-      row.style.padding = "0 14px";        
-      row.style.margin = "0";              
+      row.style.all = "unset";
+
+      const icon = document.createElement("img");
+      icon.src = tab.favIconUrl || "default_icon.png"
+      icon.style.width = "18px";
+      icon.style.height = "18px";
+      icon.style.marginRight = "10px";
+      icon.style.flexShrink = "0";
+
+      const title = document.createElement("span");
+      title.textContent = tab.title || "(no title)";
+      title.style.overflow = "hidden";
+      title.style.textOverflow = "ellipsis";
+      title.style.whiteSpace = "nowrap";
+      title.style.flexGrow = "1";
+
+      row.style.height = "45px";
+      row.style.minHeight = "45px";
+      row.style.maxHeight = "45px";
+      row.style.lineHeight = "45px";
+      row.style.padding = "0 14px";
+      row.style.margin = "0";
       row.style.borderBottom = "1px solid rgba(255,255,255,0.08)";
       row.style.fontSize = "15px";
       row.style.cursor = "pointer";
-      row.style.whiteSpace = "nowrap";
       row.style.overflow = "hidden";
-      row.style.textOverflow = "ellipsis";
       row.style.color = "#e0e0e0";
       row.style.transition = "background 0.25s, color 0.25s, transform 0.1s";
-      row.style.boxSizing = "border-box";  
-      row.style.display = "block";         
-      row.style.verticalAlign = "middle";  
+      row.style.boxSizing = "border-box";
+      row.style.display = "flex";
+      row.style.alignItems = "center";
+      row.style.verticalAlign = "middle";
+      row.style.direction = "ltr";
+
+      row.appendChild(icon);
+      row.appendChild(title);
 
 
       row.addEventListener("mouseenter", () => {
