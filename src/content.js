@@ -126,6 +126,8 @@
       return; 
     }
 
+    console.log(tabs);
+
     tabs.sort((a,b) => {
       return b.lastAccessed - a.lastAccessed;
     })
@@ -135,7 +137,8 @@
       row.style.all = "unset";
 
       const icon = document.createElement("img");
-      icon.src = tab.favIconUrl || "default_icon.png"
+      const defaultPng = chrome.runtime.getURL("public/world-globe-white-icon.png");
+      icon.src = tab.favIconUrl || defaultPng;  
       icon.style.width = "18px";
       icon.style.height = "18px";
       icon.style.marginRight = "10px";

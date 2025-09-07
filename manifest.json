@@ -29,5 +29,11 @@
         },
         "description": "Run content script"
         }
+    },
+  "web_accessible_resources": [
+    {
+      "resources": ["public/world-globe-white-icon.png"],
+      "matches": ["<all_urls>"]
     }
+  ]
   }
