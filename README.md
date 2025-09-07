@@ -44,6 +44,7 @@ You can try Tably by installing it from the [Chrome Web Store](https://chrome.go
 * **Quick Navigation** ⚡ - Use ALT+Q to quickly switch between your open tabs
 * **Keyboard-Friendly** ⌨️ - Navigate through tabs using keyboard arrows while holding ALT+Q
 * **Efficient Workflow** 🎯 - Reduce mouse dependency and speed up your browsing workflow
+* **Close Tabs Instantly** ❌ - Press Delete (while holding ALT+Q) to close the selected tab without leaving the switcher
 
 ## How To Use Locally 📥
 
