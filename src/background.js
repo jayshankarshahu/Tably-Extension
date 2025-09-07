@@ -11,7 +11,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       chrome.tabs.update(msg.id, { active: true },(tab)=> {
         chrome.windows.update(tab.windowId, { focused: true });
       });
+
+      return true;
     }
+    
+    if(msg.action === "deleteTab") {
+      chrome.tabs.remove(msg.id);
+      return true;
+    }
+
 });
 
 

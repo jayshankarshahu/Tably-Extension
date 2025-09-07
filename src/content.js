@@ -181,8 +181,8 @@
     }
 
     chrome.runtime.onMessage.addListener(handleMessage);
-    document.addEventListener("keydown",handleMove,true); // to prevent controlling the active web page
-    document.addEventListener('keyup', handleKeyUp,);
+    document.addEventListener("keydown",handleMove,true); // to prevent controlling the active web page 
+    document.addEventListener('keyup', handleKeyUp);
     overlay.addEventListener('click', handleClickOut,true);
     window.addEventListener('blur',handleClean);
     
@@ -217,6 +217,24 @@
       e.stopPropagation();
       chrome.runtime.sendMessage({ action: "activateTab", id: rows[currentIndex].tab.id });
       cleanup();
+    }
+
+    // if(e.key === 'Esc') {
+    //   e.preventDefault();
+    //   e.stopPropagation();
+    //   cleanup();
+    // }
+
+    if(e.key === 'Delete') {
+      chrome.runtime.sendMessage({ action: "deleteTab", id: rows[currentIndex].tab.id });
+      rows[currentIndex].row.remove(); 
+      rows.splice(currentIndex,1); 
+      if(rows.length == 0) {
+        cleanup();
+        return;
+      }
+      currentIndex -= 1;
+      moveRing(currentIndex);
     }
   };
 
