@@ -30,7 +30,7 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](public/recordCv1.gif)  
+![screenshot](public/demo.gif)  
 
 ---
 
