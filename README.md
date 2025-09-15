@@ -36,7 +36,7 @@
 
 ## Live Demo 🌐
 
-You can try Tably by installing it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/tably-tab-switcher/your-extension-id-here) (coming soon).
+You can try Tably by installing it from the [Chrome Web Store](https://chromewebstore.google.com/detail/tably-alt-tab-for-your-br/ickleaddhmajeejcihdncfkkmcobbnag?authuser=1&hl=en).
 
 ## Key Features ✨
 

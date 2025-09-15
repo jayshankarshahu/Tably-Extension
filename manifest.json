@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Tably",
+    "name": "Tably: Alt-Tab for your browser tabs",
     "version": "1.0.0",
-    "description": "Simulate Alt+Tab behaviour for your chrome tabs",
+    "description": "Simulate Alt+Tab behavior for your chrome tabs using Alt+Q",
     "action": {
       "default_popup": "src/popup/popup.html",
     "default_icon": {
@@ -10,13 +10,13 @@
       "32": "public/tably.png",
       "48": "public/tably.png",
       "128": "public/tably.png"
+    }
     },
       "icons": {
     "16": "public/tably.png",
     "32": "public/tably.png",
     "48": "public/tably.png",
     "128": "public/tably.png"
-    }
     },
     "permissions": ["tabs","scripting","activeTab"],
     "background" : {
