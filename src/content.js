@@ -333,10 +333,11 @@
 
     let screenshots = new Map;
 
+    console.log(SHOW_PREVIEW);    
+
     if (SHOW_PREVIEW) { //storing all ss in a map if preview is enabled
 
       console.log("Preview enabled");
-
 
       const response = await chrome.runtime.sendMessage({ action: "getPreview" });
 
@@ -361,12 +362,13 @@
 
       }
 
-    }
+      rows.forEach(row => {
+        let ss = screenshots.get(row.tab.id);      
+        ShowPreview(row.card, ss);
+      })
 
-    rows.forEach(row => {
-      let ss = screenshots.get(row.tab.id);      
-      ShowPreview(row.card, ss);
-    })
+
+    }
 
 
 
