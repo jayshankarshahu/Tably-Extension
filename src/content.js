@@ -269,6 +269,8 @@
   shadowHost.style.zIndex = 9999;
   shadowHost.style.paddingBlock = '10vh';
   shadowHost.style.paddingInline = '10vw';
+  shadowHost.style.width = `calc( 100vw - ${shadowHost.style.paddingInline}*2 )`;
+  shadowHost.style.height = `calc( 100vh - ${shadowHost.style.paddingBlock}*2 )`;
   shadowHost.style.overflow = 'hidden';
   shadowHost.style.background = 'linear-gradient(135deg, rgba(20, 20, 20, 0.32), rgba(40, 40, 40, 0.2))';
   shadowHost.style.backdropFilter = 'blur(1px)';
